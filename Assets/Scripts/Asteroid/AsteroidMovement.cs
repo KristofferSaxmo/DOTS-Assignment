@@ -5,7 +5,7 @@ using Unity.Transforms;
 using Unity.Collections;
 
 [UpdateBefore(typeof(TransformSystemGroup))]
-public partial struct AsteroidMovement : ISystem
+public partial struct AsteroidMovementSystem : ISystem
 {
     [BurstCompile]
     public void OnCreate(ref SystemState state)

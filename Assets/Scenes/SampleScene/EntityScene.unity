@@ -152,10 +152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aea82991c40921f4babff023f89f3417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerPrefab: {fileID: 1072655493004121318, guid: 72cd50ae0f23b6f418ccd71f029b84bd, type: 3}
+  PlayerSpeed: 5
+  PlayerFireRate: 0
+  PlayerBulletSpeed: 0
   AsteroidPrefab: {fileID: 7205942336488483214, guid: 9a0cd1147c50cf94890ae0d3aa19555f, type: 3}
   AsteroidSpeed: 2
-  AsteroidSpawnRate: 1
-  AsteroidSpawnAmount: 10000
+  AsteroidSpawnRate: 0.5
+  AsteroidSpawnAmount: 100
 --- !u!4 &77886373
 Transform:
   m_ObjectHideFlags: 0

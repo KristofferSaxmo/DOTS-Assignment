@@ -153,8 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AsteroidPrefab: {fileID: 7205942336488483214, guid: 9a0cd1147c50cf94890ae0d3aa19555f, type: 3}
-  AsteroidSpeed: 0.5
-  AsteroidSpawnRate: 0.1
+  AsteroidSpeed: 2
+  AsteroidSpawnRate: 1
+  AsteroidSpawnAmount: 10000
 --- !u!4 &77886373
 Transform:
   m_ObjectHideFlags: 0

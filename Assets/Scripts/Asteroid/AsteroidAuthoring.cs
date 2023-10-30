@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class AsteroidAuthoring : MonoBehaviour
@@ -9,12 +10,16 @@ public class AsteroidAuthoring : MonoBehaviour
         {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
 
-            AddComponent<Asteroid>(entity);
+            AddComponent(entity, new Asteroid()
+            {
+                Entity = entity
+            });
         }
     }
 }
 
 public struct Asteroid : IComponentData
 {
-    
+    public Entity Entity;
+    public float3 Direction;
 }

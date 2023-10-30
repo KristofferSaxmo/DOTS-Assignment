@@ -5,6 +5,7 @@ public class ConfigAuthoring : MonoBehaviour
 {
     [Header("Player")]
     public GameObject PlayerPrefab;
+    public float PlayerRotationSpeed;
     public float PlayerSpeed;
     public float PlayerFireRate;
     
@@ -27,6 +28,7 @@ public class ConfigAuthoring : MonoBehaviour
             AddComponent(entity, new Config
             {
                 PlayerPrefab = GetEntity(authoring.PlayerPrefab, TransformUsageFlags.Dynamic),
+                PlayerRotationSpeed = authoring.PlayerRotationSpeed,
                 PlayerSpeed = authoring.PlayerSpeed,
                 PlayerFireRate = authoring.PlayerFireRate,
                 BulletSpeed = authoring.BulletSpeed,
@@ -43,6 +45,7 @@ public class ConfigAuthoring : MonoBehaviour
 public struct Config : IComponentData
 {
     public Entity PlayerPrefab;
+    public float PlayerRotationSpeed;
     public float PlayerSpeed;
     public float PlayerFireRate;
     public Entity AsteroidPrefab;

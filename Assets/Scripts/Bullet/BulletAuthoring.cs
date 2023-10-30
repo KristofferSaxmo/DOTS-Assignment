@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class BulletAuthoring : MonoBehaviour
@@ -16,5 +17,5 @@ public class BulletAuthoring : MonoBehaviour
 
 public struct Bullet : IComponentData
 {
-    
+    public float3 Direction;
 }

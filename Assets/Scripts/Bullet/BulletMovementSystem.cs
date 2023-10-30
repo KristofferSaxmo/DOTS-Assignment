@@ -1,8 +1,6 @@
 using Unity.Entities;
 using Unity.Burst;
-using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 [UpdateBefore(typeof(TransformSystemGroup))]
 public partial struct BulletMovementSystem : ISystem
@@ -19,13 +17,21 @@ public partial struct BulletMovementSystem : ISystem
     {
         Config config = SystemAPI.GetSingleton<Config>();
         var deltaTime = SystemAPI.Time.DeltaTime;
-        foreach (var (bulletTransform, bulletPrefab) in SystemAPI.Query<RefRW<LocalTransform>>().WithAll<Bullet>()
+        float screenWidth = 9.1f;
+        float screenHeight = 5.25f;
+        
+        foreach (var (bulletTransform, bullet, bulletEntity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<Bullet>>().WithAll<Bullet>()
                      .WithEntityAccess())
         {
-            bulletTransform.ValueRW.Position = new float3(
-                bulletTransform.ValueRO.Position.x,
-                bulletTransform.ValueRO.Position.y + config.BulletSpeed * deltaTime,
-                0);
+            bulletTransform.ValueRW.Position += bullet.ValueRO.Direction * config.BulletSpeed * deltaTime;
+            
+            if (bulletTransform.ValueRO.Position.y < -screenHeight ||
+                bulletTransform.ValueRO.Position.y > screenHeight ||
+                bulletTransform.ValueRO.Position.x < -screenWidth ||
+                bulletTransform.ValueRO.Position.x > screenWidth)
+            {
+                SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged).DestroyEntity(bulletEntity);
+            }
         }
     }
 }

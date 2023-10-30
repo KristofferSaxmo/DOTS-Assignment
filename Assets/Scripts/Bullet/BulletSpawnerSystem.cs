@@ -3,7 +3,6 @@ using Unity.Mathematics;
 using Unity.Burst;
 using Unity.Transforms;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 public partial struct BulletSpawnerSystem : ISystem
 {
@@ -12,6 +11,7 @@ public partial struct BulletSpawnerSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<Config>();
+        state.RequireForUpdate<Player>();
     }
     
     [BurstCompile]
@@ -28,8 +28,15 @@ public partial struct BulletSpawnerSystem : ISystem
         RefRO<LocalTransform> playerTransform = SystemAPI.GetComponentRO<LocalTransform>(player.Entity);
         
         Entity bullet = state.EntityManager.Instantiate(config.BulletPrefab);
-        SystemAPI.GetComponentRW<LocalTransform>(bullet).ValueRW.Position = new float3(playerTransform.ValueRO.Position.x, playerTransform.ValueRO.Position.y + 0.5f, 0);
-        
+        float3 forwardVector = math.mul(playerTransform.ValueRO.Rotation, new float3(0, 1, 0));
+        float3 spawnOffset = forwardVector * 0.7f;
+        state.EntityManager.SetComponentData(bullet, new LocalTransform
+        {
+            Position = playerTransform.ValueRO.Position + spawnOffset,
+            Rotation = playerTransform.ValueRO.Rotation,
+            Scale = 1
+        });
+        SystemAPI.GetComponentRW<Bullet>(bullet).ValueRW.Direction = forwardVector;
         _timeSinceLastSpawn = 0;
     }
 }

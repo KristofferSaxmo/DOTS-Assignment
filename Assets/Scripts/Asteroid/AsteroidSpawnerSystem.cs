@@ -56,12 +56,12 @@ public partial struct AsteroidSpawnerSystem : ISystem
             if (_spawnTop)
             {
                 yPos = screenHeight;
-                direction = new float3(Random.Range(-0.9f, 0.9f), Random.Range(-0.1f, -1.0f), 0);
+                direction = math.normalize(new float3(Random.Range(-0.9f, 0.9f), Random.Range(-0.1f, -1.0f), 0));
             }
             else
             {
                 yPos = -screenHeight;
-                direction = new float3(Random.Range(-0.9f, 0.9f), Random.Range(0.1f, 1.0f), 0);
+                direction = math.normalize(new float3(Random.Range(-0.9f, 0.9f), Random.Range(0.1f, 1.0f), 0));
             }
             
             xPos = Random.Range(-8.0f, 8.0f);

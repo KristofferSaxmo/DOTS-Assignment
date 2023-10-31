@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.Collections;
+using Unity.Jobs;
 
 [UpdateBefore(typeof(TransformSystemGroup))]
 public partial struct AsteroidMovementSystem : ISystem
@@ -21,31 +22,14 @@ public partial struct AsteroidMovementSystem : ISystem
         Config config = SystemAPI.GetSingleton<Config>();
         
         var deltaTime = SystemAPI.Time.DeltaTime;
-        foreach (var (asteroidTransform, asteroid, asteroidEntity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<Asteroid>>().WithAll<Asteroid>()
-                     .WithEntityAccess())
+
+        var movementJob = new AsteroidMovementJob()
         {
-            asteroidTransform.ValueRW.Position += asteroid.ValueRO.Direction * config.AsteroidSpeed * deltaTime;
-        }
-        
-        float screenWidth = 9.1f;
-        float screenHeight = 5.25f;
-        
-        // Move asteroids to the reverse side if they go out of bounds
-        foreach (var (asteroidTransform, asteroid, asteroidEntity) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<Asteroid>>().WithAll<Asteroid>()
-                     .WithEntityAccess())
-        {
-            if (asteroidTransform.ValueRO.Position.y < -screenHeight)
-                asteroidTransform.ValueRW.Position = new float3(asteroidTransform.ValueRO.Position.x, screenHeight, 0);
-            
-            else if (asteroidTransform.ValueRO.Position.y > screenHeight)
-                asteroidTransform.ValueRW.Position = new float3(asteroidTransform.ValueRO.Position.x, -screenHeight, 0);
-            
-            else if (asteroidTransform.ValueRO.Position.x < -screenWidth)
-                asteroidTransform.ValueRW.Position = new float3(screenWidth, asteroidTransform.ValueRO.Position.y, 0);
-            
-            else if (asteroidTransform.ValueRO.Position.x > screenWidth)
-                asteroidTransform.ValueRW.Position = new float3(-screenWidth, asteroidTransform.ValueRO.Position.y, 0);
-        }
+            DeltaTime = deltaTime,
+            AsteroidSpeed = config.AsteroidSpeed
+        };
+
+        movementJob.ScheduleParallel();
     }
 }
 
@@ -53,14 +37,25 @@ public partial struct AsteroidMovementSystem : ISystem
 [BurstCompile]
 public partial struct AsteroidMovementJob : IJobEntity
 {
+    private const float ScreenWidth = 9.1f;
+    private const float ScreenHeight = 5.25f;
     public float DeltaTime;
     public float AsteroidSpeed;
 
-    public void Execute(ref LocalTransform transform)
+    public void Execute(ref LocalTransform transform, ref Asteroid asteroid)
     {
-        transform.Position = new float3(
-            transform.Position.x,
-            transform.Position.y - AsteroidSpeed * DeltaTime,
-            0);
+        transform.Position += asteroid.Direction * AsteroidSpeed * DeltaTime;
+        
+        if (transform.Position.y < -ScreenHeight)
+            transform.Position = new float3(transform.Position.x, ScreenHeight, 0);
+            
+        else if (transform.Position.y > ScreenHeight)
+            transform.Position = new float3(transform.Position.x, -ScreenHeight, 0);
+            
+        else if (transform.Position.x < -ScreenWidth)
+            transform.Position = new float3(ScreenWidth, transform.Position.y, 0);
+            
+        else if (transform.Position.x > ScreenWidth)
+            transform.Position = new float3(-ScreenWidth, transform.Position.y, 0);
     }
 }

@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public partial struct AsteroidSpawnerSystem : ISystem
 {
-    private float _timeSinceLastSpawn;
+    private float _spawnCooldown;
     private bool _spawnTop;
     private bool _spawnLeft;
     private int _wave;
@@ -31,16 +31,15 @@ public partial struct AsteroidSpawnerSystem : ISystem
         var config = SystemAPI.GetSingleton<Config>();
         var dt = SystemAPI.Time.DeltaTime;
         
-        _timeSinceLastSpawn += dt;
+        _spawnCooldown += dt;
 
-        if (_timeSinceLastSpawn < config.AsteroidSpawnRate) return;
+        if (_spawnCooldown < config.AsteroidSpawnRate) return;
         
         _wave++;
         
         // wave = n
         // config.AsteroidSpawnAmount = x
         // (x * n) + n^2
-        // 6, 14, 24, 36, 50, 66, 84, 104, 126, 150, 176, 204, 234, 266, 300, 336, 374, 414, 456, 500...
         
         int spawnAmount = config.AsteroidSpawnAmount * _wave + _wave*_wave;
         
@@ -70,6 +69,6 @@ public partial struct AsteroidSpawnerSystem : ISystem
             SystemAPI.GetComponentRW<LocalTransform>(asteroid).ValueRW.Position = new float3(xPos, yPos, 0);
             SystemAPI.GetComponentRW<Asteroid>(asteroid).ValueRW.Direction = direction;
         }
-        _timeSinceLastSpawn = 0;
+        _spawnCooldown = 0;
     }
 }

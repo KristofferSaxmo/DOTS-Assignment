@@ -29,7 +29,7 @@ public partial struct BulletSpawnerSystem : ISystem
         
         Entity bullet = state.EntityManager.Instantiate(config.BulletPrefab);
         float3 forwardVector = math.mul(playerTransform.ValueRO.Rotation, new float3(0, 1, 0));
-        float3 spawnOffset = forwardVector * 0.7f;
+        float3 spawnOffset = forwardVector * 0.25f;
         state.EntityManager.SetComponentData(bullet, new LocalTransform
         {
             Position = playerTransform.ValueRO.Position + spawnOffset,

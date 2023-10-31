@@ -14,11 +14,13 @@ public partial struct ColissionSystem : ISystem
         state.RequireForUpdate<Config>();
         state.RequireForUpdate<Asteroid>();
         state.RequireForUpdate<Bullet>();
+        state.RequireForUpdate<Player>();
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+       
         Config config = SystemAPI.GetSingleton<Config>();
         var deltaTime = SystemAPI.Time.DeltaTime;
         Player player = SystemAPI.GetSingleton<Player>();
@@ -32,7 +34,6 @@ public partial struct ColissionSystem : ISystem
                 if (CheckCollision(asteroidTransform.ValueRO.Position, bulletTransform.ValueRO.Position))
                 {
                     SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged).DestroyEntity(asteroidEntity);
-                    SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged).DestroyEntity(bulletEntity);
                 }
             }
         }
@@ -41,9 +42,10 @@ public partial struct ColissionSystem : ISystem
     [BurstCompile]
     private bool CheckCollision(float3 position1, float3 position2)
     {
-        return position1.x > position2.x - 0.5f &&
-               position1.x < position2.x + 0.5f &&
-               position1.y > position2.y - 0.5f &&
-               position1.y < position2.y + 0.5f;
+        float precision = 0.2f;
+        return position1.x > position2.x - precision &&
+               position1.x < position2.x + precision &&
+               position1.y > position2.y - precision &&
+               position1.y < position2.y + precision;
     }
 }

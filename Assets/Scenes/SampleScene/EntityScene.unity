@@ -153,13 +153,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 1072655493004121318, guid: 72cd50ae0f23b6f418ccd71f029b84bd, type: 3}
-  PlayerRotationSpeed: 3
-  PlayerSpeed: 3
-  PlayerFireRate: 0.1
+  PlayerRotationSpeed: 4
+  PlayerSpeed: 2
+  PlayerFireRate: 0.25
   AsteroidPrefab: {fileID: 7205942336488483214, guid: 9a0cd1147c50cf94890ae0d3aa19555f, type: 3}
-  AsteroidSpeed: 0.5
-  AsteroidSpawnRate: 1.5
-  AsteroidSpawnAmount: 100
+  AsteroidSpeed: 1
+  AsteroidSpawnRate: 1
+  AsteroidSpawnAmount: 5000
   BulletPrefab: {fileID: 2282126402021197905, guid: 8ceb083359c92fe4bb60f6258044fdc1, type: 3}
   BulletSpeed: 5
 --- !u!4 &77886373

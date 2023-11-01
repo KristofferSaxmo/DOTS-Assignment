@@ -1,20 +1,20 @@
 using Unity.Entities;
-using Unity.Mathematics;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class StatsToText : MonoBehaviour
 {
-    public EntityQuery entityQuery;
+    private EntityQuery _entityQuery;
     private void Start()
     {
         EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        entityQuery = entityManager.CreateEntityQuery(ComponentType.ReadOnly<Asteroid>());
+        _entityQuery = entityManager.CreateEntityQuery(ComponentType.ReadOnly<Asteroid>());
     }
     private void Update()
     {
-        int entityCount = entityQuery.CalculateEntityCount();
+        int entityCount = _entityQuery.CalculateEntityCount();
         float fps = 1.0f / Time.deltaTime;
-        GetComponent<TextMeshProUGUI>().SetText("FPS: " + fps + "\nAsteroids: " + entityCount);
+        GetComponent<TextMeshProUGUI>().SetText("FPS: " + math.round(fps) + "\nAsteroids: " + entityCount);
     }
 }

@@ -1,21 +1,23 @@
+using System.Linq;
 using Unity.Entities;
 using Unity.Burst;
 using Unity.Transforms;
 using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 public partial struct AsteroidSpawnerSystem : ISystem
 {
+    private const float ScreenHeight = 5.20f;
     private float _spawnCooldown;
     private bool _spawnTop;
     private bool _spawnLeft;
+    private int _asteroidCount;
     private int _wave;
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<Config>();
+
     }
 
     [BurstCompile]
@@ -46,24 +48,21 @@ public partial struct AsteroidSpawnerSystem : ISystem
         for (int i = 0; i < spawnAmount; i++)
         {
             Entity asteroid = state.EntityManager.Instantiate(config.AsteroidPrefab);
-            float xPos;
             float yPos;
             float3 direction;
-            float screenWidth = 9.1f;
-            float screenHeight = 5.20f;
             
             if (_spawnTop)
             {
-                yPos = screenHeight;
+                yPos = ScreenHeight;
                 direction = math.normalize(new float3(Random.Range(-0.9f, 0.9f), Random.Range(-0.1f, -1.0f), 0));
             }
             else
             {
-                yPos = -screenHeight;
+                yPos = -ScreenHeight;
                 direction = math.normalize(new float3(Random.Range(-0.9f, 0.9f), Random.Range(0.1f, 1.0f), 0));
             }
             
-            xPos = Random.Range(-8.0f, 8.0f);
+            float xPos = Random.Range(-8.0f, 8.0f);
 
             _spawnTop = !_spawnTop;
             SystemAPI.GetComponentRW<LocalTransform>(asteroid).ValueRW.Position = new float3(xPos, yPos, 0);

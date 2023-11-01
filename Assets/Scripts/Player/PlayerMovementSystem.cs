@@ -7,6 +7,9 @@ using UnityEngine;
 [UpdateBefore(typeof(TransformSystemGroup))]
 public partial struct PlayerMovementSystem : ISystem
 {
+    private const float ScreenWidth = 9.1f;
+    private const float ScreenHeight = 5.25f;
+    
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
@@ -30,20 +33,17 @@ public partial struct PlayerMovementSystem : ISystem
         if (vertical != 0)
             MovePlayer(playerTransform, config, deltaTime, vertical);
         
-        float screenWidth = 9.1f;
-        float screenHeight = 5.25f;
+        if (playerTransform.ValueRO.Position.y < -ScreenHeight)
+            playerTransform.ValueRW.Position = new float3(playerTransform.ValueRO.Position.x, ScreenHeight, 0);
         
-        if (playerTransform.ValueRO.Position.y < -screenHeight)
-            playerTransform.ValueRW.Position = new float3(playerTransform.ValueRO.Position.x, screenHeight, 0);
+        else if (playerTransform.ValueRO.Position.y > ScreenHeight)
+            playerTransform.ValueRW.Position = new float3(playerTransform.ValueRO.Position.x, -ScreenHeight, 0);
         
-        else if (playerTransform.ValueRO.Position.y > screenHeight)
-            playerTransform.ValueRW.Position = new float3(playerTransform.ValueRO.Position.x, -screenHeight, 0);
+        else if (playerTransform.ValueRO.Position.x < -ScreenWidth)
+            playerTransform.ValueRW.Position = new float3(ScreenWidth, playerTransform.ValueRO.Position.y, 0);
         
-        else if (playerTransform.ValueRO.Position.x < -screenWidth)
-            playerTransform.ValueRW.Position = new float3(screenWidth, playerTransform.ValueRO.Position.y, 0);
-        
-        else if (playerTransform.ValueRO.Position.x > screenWidth)
-            playerTransform.ValueRW.Position = new float3(-screenWidth, playerTransform.ValueRO.Position.y, 0);
+        else if (playerTransform.ValueRO.Position.x > ScreenWidth)
+            playerTransform.ValueRW.Position = new float3(-ScreenWidth, playerTransform.ValueRO.Position.y, 0);
     }
 
     private static void MovePlayer(RefRW<LocalTransform> playerTransform, Config config, float deltaTime, float vertical)

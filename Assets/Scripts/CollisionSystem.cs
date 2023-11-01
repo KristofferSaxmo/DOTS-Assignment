@@ -6,8 +6,9 @@ using Unity.Transforms;
 
 
 [UpdateAfter(typeof(TransformSystemGroup))]
-public partial struct ColissionSystem : ISystem
+public partial struct CollisionSystem : ISystem
 {
+    private const float Precision = 0.2f;
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
@@ -42,10 +43,9 @@ public partial struct ColissionSystem : ISystem
     [BurstCompile]
     private bool CheckCollision(float3 position1, float3 position2)
     {
-        float precision = 0.2f;
-        return position1.x > position2.x - precision &&
-               position1.x < position2.x + precision &&
-               position1.y > position2.y - precision &&
-               position1.y < position2.y + precision;
+        float3 delta = position1 - position2;
+        float distanceSquared = math.dot(delta, delta); // Squared distance for performance.
+        const float precisionSquared = Precision * Precision;
+        return distanceSquared < precisionSquared;
     }
 }

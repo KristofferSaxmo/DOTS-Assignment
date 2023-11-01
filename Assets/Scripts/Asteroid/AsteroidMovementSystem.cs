@@ -1,10 +1,7 @@
-using System.Linq;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using Unity.Collections;
-using Unity.Jobs;
 
 [UpdateBefore(typeof(TransformSystemGroup))]
 public partial struct AsteroidMovementSystem : ISystem
@@ -44,7 +41,7 @@ public partial struct AsteroidMovementJob : IJobEntity
 
     public void Execute(ref LocalTransform transform, ref Asteroid asteroid)
     {
-        transform.Position += asteroid.Direction * AsteroidSpeed * DeltaTime;
+        transform.Position.xy += asteroid.Direction.xy * AsteroidSpeed * DeltaTime;
         
         if (transform.Position.y < -ScreenHeight)
             transform.Position = new float3(transform.Position.x, ScreenHeight, 0);

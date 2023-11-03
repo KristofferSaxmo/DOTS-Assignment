@@ -8,7 +8,7 @@ using Unity.Transforms;
 [UpdateAfter(typeof(TransformSystemGroup))]
 public partial struct CollisionSystem : ISystem
 {
-    private const float Precision = 0.2f;
+    private const float Precision = 0.4f;
     const float PrecisionSquared = Precision * Precision;
     
     [BurstCompile]

@@ -15,7 +15,7 @@ The FPS is stable, with substantial drops only happening when a new wave is spaw
 I never did a version with MonoBehavior/OOP, but it wouldn't come close to 10k entities as ECS has.
 
 ## Optimization
-I started with ECS immediately, so it was fairly optimized from the beginning. Therefore I don't have any tags to show optimization progress in the same way.
+I started with ECS immediately, so it was fairly optimized from the beginning. I did add the tags, but they are not black and white fully optimized / not optimized.
 The main things that seemed to take up performance was the rendering and the AsteroidMovementSystem.
 The movement was already very simple, so not much more could be done about that.
 I tried going from no jobs to parallel jobs, which didn't do anything to the performance.

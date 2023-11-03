@@ -159,7 +159,7 @@ MonoBehaviour:
   AsteroidPrefab: {fileID: 7205942336488483214, guid: 9a0cd1147c50cf94890ae0d3aa19555f, type: 3}
   AsteroidSpeed: 1
   AsteroidSpawnRate: 1
-  AsteroidSpawnAmount: 70000
+  AsteroidSpawnAmount: 5000
   BulletPrefab: {fileID: 2282126402021197905, guid: 8ceb083359c92fe4bb60f6258044fdc1, type: 3}
   BulletSpeed: 5
 --- !u!4 &77886373

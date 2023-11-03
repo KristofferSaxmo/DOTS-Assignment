@@ -1,7 +1,7 @@
 # DOTS-Assignment
  
 ## About
-The assignment is about utilizing Unity DOTS to make an asteroids game as optimized as possible. Unity normaly works with OOP (Object Oriented Programming), but DOTS works with ECS (Entity Component System). The differences between these two are very big. OOP uses polymorphism to build upon objects, while ECS instead uses entities that consists of components. All entities are then handled by various systems. In my personal opinion, this can end up with much faster and less tangled code if done correctly.
+The assignment is about utilizing Unity DOTS to make an asteroids game as optimized as possible. Unity normaly works with OOP (Object Oriented Programming), but DOTS works with ECS (Entity Component System). The differences between these two are very big. OOP uses polymorphism to build upon objects, while ECS instead uses entities that consists of components. All entities are then handled by various systems. If done correctly, ECS has the possibility to be much faster with less tangled code.
 
 ## Controls
 The controls are:

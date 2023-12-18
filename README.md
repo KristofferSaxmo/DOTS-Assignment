@@ -1,7 +1,10 @@
 # DOTS-Assignment
  
 ## About
-The assignment is about utilizing Unity DOTS to make an asteroids game as optimized as possible. Unity normaly works with OOP (Object Oriented Programming), but DOTS works with ECS (Entity Component System). The differences between these two are very big. OOP uses polymorphism to build upon objects, while ECS instead uses entities that consists of components. All entities are then handled by various systems. If done correctly, ECS has the possibility to be much faster with less tangled code.
+The assignment is about utilizing Unity DOTS to make an asteroids game as optimized as possible. DOTS have a lot of features that can be utilized to make the game run as smooth as possible. The 3 big ones are:
+- ECS, another way of structuring your code. It separates data from logic and works well with many entities.
+- Jobs, can do multiple tasks at the same time, taking advantage of multi-core CPU's.
+- Burst Compiler, it's faster than the normal compiler, taking advantage of modern CPU architecture.
 
 ## Controls
 The controls are:
@@ -10,17 +13,13 @@ The controls are:
 - [Shoot] Space
 
 ## Performance
-I reach around 20fps with 70k entities, which I find to be good enough.
-The FPS is stable, with substantial drops only happening when a new wave is spawned.
-I never did a version with MonoBehavior/OOP, but it wouldn't come close to 10k entities as ECS has.
+With DOTS, I reach around 10fps with 70k entities.
+
+With standard Unity, I reach 5fps with 70k entities.
 
 ## Optimization
-I started with ECS immediately, so it was fairly optimized from the beginning. I did add the tags, but they are not black and white fully optimized / not optimized.
-The main things that seemed to take up performance was the rendering and the AsteroidMovementSystem.
-The movement was already very simple, so not much more could be done about that.
-I tried going from no jobs to parallel jobs, which didn't do anything to the performance.
-Aside from that, I tried some different ways to detect colissions. Without much performance gain unfortunately.
-
-The game doesn't have much to optimize as no complex calcuations are used.
-Collisions are checked by the distance between two entities. They are not too heavy on the performance.
-If they were, I would have considered making a quad tree to see if that helps.
+With the non-DOTS version, notice a lot of lag when I first shoot my bullets.
+This very likely is because each bullet checks collision between all of the asteroids.
+The way around this would be to use spacial partitioning.
+The differences between the not optimized and the optimized versions are that I'm utilizing all the DOTS features.
+ECS and jobs makes handling a lot of entities in parallel possible, and Burst Compiler is used to compile the code faster.

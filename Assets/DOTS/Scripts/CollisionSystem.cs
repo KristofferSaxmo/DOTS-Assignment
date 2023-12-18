@@ -22,11 +22,9 @@ public partial struct CollisionSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var (asteroidTransform, asteroidEntity) in SystemAPI.Query<RefRW<LocalTransform>>().WithAll<Asteroid>()
-                     .WithEntityAccess())
+        foreach (var (bulletTransform, bulletEntity) in SystemAPI.Query<RefRW<LocalTransform>>().WithAll<Bullet>().WithEntityAccess())
         {
-            foreach (var (bulletTransform, bulletEntity) in SystemAPI.Query<RefRW<LocalTransform>>().WithAll<Bullet>()
-                         .WithEntityAccess())
+            foreach (var (asteroidTransform, asteroidEntity) in SystemAPI.Query<RefRW<LocalTransform>>().WithAll<Asteroid>().WithEntityAccess())
             {
                 if (CheckCollision(asteroidTransform.ValueRO.Position, bulletTransform.ValueRO.Position))
                 {

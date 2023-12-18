@@ -18,7 +18,7 @@ With DOTS, I reach around 10fps with 70k entities.
 With standard Unity, I reach 5fps with 70k entities.
 
 ## Optimization
-With the non-DOTS version, notice a lot of lag when I first shoot my bullets.
+With the non-DOTS version, I notice a lot of lag when I first shoot my bullets.
 This very likely is because each bullet checks collision between all of the asteroids.
 The way around this would be to use spacial partitioning.
 The differences between the not optimized and the optimized versions are that I'm utilizing all the DOTS features.

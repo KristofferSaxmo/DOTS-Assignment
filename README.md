@@ -13,13 +13,17 @@ The controls are:
 - [Shoot] Space
 
 ## Performance
-With DOTS, I reach around 10fps with 70k entities.
+Before optimizing, I reach ~10fps with 25k entities.
 
-With standard Unity, I reach 5fps with 70k entities.
+After optimizing, I reach ~30fps with 25k entities.
 
 ## Optimization
-With the non-DOTS version, I notice a lot of lag when I first shoot my bullets.
-This very likely is because each bullet checks collision between all of the asteroids.
-The way around this would be to use spacial partitioning.
-The differences between the not optimized and the optimized versions are that I'm utilizing all the DOTS features.
-ECS and jobs makes handling a lot of entities in parallel possible, and Burst Compiler is used to compile the code faster.
+Before optimizing, I noticed that the code responsible for moving the asteroids was way too slow. **ALL** of the processes each frame has to take ~16.67ms for the game to run at 60FPS. As showcased below, the movement of the asteroids alone take more time than that.
+
+![Unoptimized Profiler](UnoptimizedProfiler.png)
+
+To optimize it, converted the code to DOTS, utilizing many of it's features like burst compiling and jobs to increase the efficiency as much as possible. Because I now instead use ECS, the movement of the asteroids are moved away from the [Asteroid](https://github.com/KristofferSaxmo/DOTS-Assignment/blob/main/Assets/NotDOTS/Scripts/Asteroid2.cs) class to [AsteroidMovementSystem](https://github.com/KristofferSaxmo/DOTS-Assignment/blob/main/Assets/DOTS/Scripts/Asteroid/AsteroidMovementSystem.cs), which handles the movement for all of the asteroids in its update loop.
+
+The results are really, really good. Instead of 20ms, it now takes 0.02ms to move 25k asteroids. Parallel jobs are to thank for this, allowing the proccess to be divided into multiple threads, therefore saving lots of valuable time.
+
+![Optimized Profiler](OptimizedProfiler.png)
